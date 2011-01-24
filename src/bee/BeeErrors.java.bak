@@ -1,0 +1,15 @@
+package bee;
+
+public class BeeErrors
+{
+    public static String getError(int index)
+    {
+        switch (index)
+        {
+            case 1: return "BEE_ERR_MEM";
+            case 2: return "BEE_ATTR_NOT_FOUND";
+        }
+
+        return "Bee Error Not Found";
+    }
+}

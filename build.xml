@@ -1,0 +1,47 @@
+<project name="Java Bee bindings" default="compile" basedir=".">
+    <description>
+        Java Bee bindings
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <path id="build.classpath">
+      <fileset file="lib/jna.jar"/>
+  </path>
+
+  <target name="compile" depends="init">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}">
+	<classpath refid="build.classpath"/>
+	<compilerarg value="-Xlint:all,-serial"/>
+    </javac>
+  </target>
+
+  <target name="init-dist">
+      <tstamp/>
+      <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="jar" depends="init-dist,compile">
+      <jar jarfile="${dist}/bee.jar" compress="yes">
+	  <fileset dir="${build}" excludes="*.class"/>
+      </jar>
+  </target>
+
+  <target name="clean">
+      <delete dir="${build}"/>
+  </target>
+
+  <target name="dist-clean">
+      <delete dir="${dist}"/>
+  </target>
+</project>

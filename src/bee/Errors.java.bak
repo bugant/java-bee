@@ -1,0 +1,23 @@
+package bee;
+import com.sun.jna.*;
+
+public class Errors
+{
+    private static BeeLibrary lib = BeeLibrary.INSTANCE;
+
+    public static String getError(int index)
+    {
+        if (index > 0)
+            return Pkcs11Errors.getError(index);
+
+        return BeeErrors.getError(-1 * index);
+    }
+
+    public static void checkError() throws BeeException
+    {
+        NativeLong err = lib.bee_get_last_error();
+        if (err.intValue() != 0)
+            throw new BeeException(err.intValue());
+    }
+
+}

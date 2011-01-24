@@ -1,0 +1,59 @@
+package bee;
+import com.sun.jna.*;
+
+public class KeyType
+{
+    private NativeLong type;
+    public static final int RSA = 0;
+    public static final int DSA = 1;
+    public static final int DH = 2;
+    public static final int DES = 0x13;
+    public static final int DES2 = 0x14;
+    public static final int DES3 = 0x15;
+    public static final int AES = 0x1F;
+
+    public KeyType(NativeLong type)
+    {
+        this.type = type;
+    }
+
+    public KeyType(int type)
+    {
+        this.type = new NativeLong(type);
+    }
+
+    public NativeLong getType()
+    {
+        return type;
+    }
+
+    public boolean isRSAKey() {return getType().intValue() == KeyType.RSA;}
+
+    public boolean isDSAKey() {return getType().intValue() == KeyType.DSA;}
+
+    public boolean isDHKey() {return getType().intValue() == KeyType.DH;}
+
+    public boolean isDESKey() {return getType().intValue() == KeyType.DES;}
+
+    public boolean isDES2Key() {return getType().intValue() == KeyType.DES2;}
+
+    public boolean isDES3Key() {return getType().intValue() == KeyType.DES3;}
+
+    public boolean isAESKey() {return getType().intValue() == KeyType.AES;}
+
+    public String toString()
+    {
+        switch (type.intValue())
+        {
+            case KeyType.RSA: return "CKK_RSA";
+            case KeyType.DSA: return "CKK_DSA";
+            case KeyType.DH: return "CKK_DH";
+            case KeyType.DES: return "CKK_DES";
+            case KeyType.DES2: return "CKK_DES2";
+            case KeyType.DES3: return "CKK_DES3";
+            case KeyType.AES: return "CKK_AES";
+        }
+
+        return "Unsupported KeyType";
+    }
+}

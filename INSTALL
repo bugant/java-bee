@@ -1,0 +1,5 @@
+#To compile/install:
+
+ant clean; ant jar; cp dist/bee.jar ../../tool/Tookan/lib/
+
+#have fun!

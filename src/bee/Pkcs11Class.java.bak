@@ -1,0 +1,46 @@
+package bee;
+import com.sun.jna.*;
+
+public class Pkcs11Class
+{
+    private NativeLong cl;
+    public static final int SECRET_KEY = 4;
+    public static final int PUBLIC_KEY = 2;
+    public static final int PRIVATE_KEY = 3;
+
+    public Pkcs11Class(NativeLong cl)
+    {
+        this.cl = cl;
+    }
+
+    public Pkcs11Class(int cl)
+    {
+        this.cl = new NativeLong(cl);
+    }
+
+    public NativeLong getCl()
+    {
+        return cl;
+    }
+
+    public boolean isSecretKey() {return getCl().intValue() == Pkcs11Class.SECRET_KEY;}
+
+    public boolean isPublicKey() {return getCl().intValue() == Pkcs11Class.PUBLIC_KEY;}
+
+    public boolean isPrivateKey() {return getCl().intValue() == Pkcs11Class.PRIVATE_KEY;}
+
+    public String toString()
+    {
+        switch (cl.intValue())
+        {
+            case Pkcs11Class.SECRET_KEY:
+                return "CKO_SECRET_KEY";
+            case Pkcs11Class.PUBLIC_KEY:
+                return "CKO_PUBLIC_KEY";
+            case Pkcs11Class.PRIVATE_KEY:
+                return "CKO_PRIVATE_KEY";
+        }
+
+        return "Unsupported Class";
+    }
+}

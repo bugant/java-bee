@@ -44,12 +44,14 @@ public class Template implements Cloneable
     private Pointer publicExponentAttribute;
     private Pointer privateExponentAttribute;
     private Pointer prime1Attribute;
+    private Pointer prime2Attribute;
 
     private BeeException valueException;
     private BeeException modulusException;
     private BeeException publicExponentException;
     private BeeException privateExponentException;
     private BeeException prime1Exception;
+    private BeeException prime2Exception;
 
     public Template() throws BeeException
     {
@@ -73,11 +75,13 @@ public class Template implements Cloneable
         publicExponentAttribute = null;
         privateExponentAttribute = null;
         prime1Attribute = null;
+        prime2Attribute = null;
 
         modulusException = null;
         publicExponentException = null;
         privateExponentException = null;
         prime1Exception = null;
+        prime2Exception = null;
     }
 
     public Template getACopy()
@@ -984,7 +988,47 @@ public class Template implements Cloneable
         prime1Exception = null;
     }
 
-    protected void setPrime1Exception(BeeException e) {privateExponentException = e;}
+    protected void setPrime1Exception(BeeException e) {prime1Exception = e;}
+
+    public void addPrime2() throws BeeException
+    {
+        lib.bee_reset_error();
+        lib.bee_add_prime_2(t);
+        Errors.checkError();
+    }
+
+    public byte[] getPrime2() throws BeeException
+    {
+        NativeLong[] len = new NativeLong[1];
+        Pointer val;
+
+        if (prime2Exception != null)
+            throw prime2Exception;
+
+        lib.bee_reset_error();
+        val = lib.bee_get_prime_2(t, len);
+        if (val == null)
+            throw new BeeException(lib.bee_get_last_error().intValue());
+
+        return val.getByteArray(0, len[0].intValue());
+    }
+
+    public void setPrime2(byte[] v) throws BeeException
+    {
+        freeAttr(prime2Attribute);
+        prime2Attribute = null;
+        lib.bee_reset_error();
+
+        Pointer val = copyByteArray(v);
+        if (val != null)
+            lib.bee_set_prime_2(t, val, new NativeLong(v.length));
+        Errors.checkError();
+
+        prime2Attribute = val;
+        prime2Exception = null;
+    }
+
+    protected void setPrime2Exception(BeeException e) {prime2Exception = e;}
 
     private void mergeBoolAttr(Template t, String attr)
     {

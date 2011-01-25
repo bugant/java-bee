@@ -47,6 +47,7 @@ public class Template implements Cloneable
     private Pointer prime2Attribute;
     private Pointer exponent1Attribute;
     private Pointer exponent2Attribute;
+    private Pointer coefficientAttribute;
 
     private BeeException valueException;
     private BeeException modulusException;
@@ -56,6 +57,7 @@ public class Template implements Cloneable
     private BeeException prime2Exception;
     private BeeException exponent1Exception;
     private BeeException exponent2Exception;
+    private BeeException coefficientException;
 
     public Template() throws BeeException
     {
@@ -1113,6 +1115,46 @@ public class Template implements Cloneable
     }
 
     protected void setExponent2Exception(BeeException e) {exponent2Exception = e;}
+
+    public void addCoefficient() throws BeeException
+    {
+        lib.bee_reset_error();
+        lib.bee_add_coefficient(t);
+        Errors.checkError();
+    }
+
+    public byte[] getCoefficient() throws BeeException
+    {
+        NativeLong[] len = new NativeLong[1];
+        Pointer val;
+
+        if (coefficientException != null)
+            throw coefficientException;
+
+        lib.bee_reset_error();
+        val = lib.bee_get_coefficient(t, len);
+        if (val == null)
+            throw new BeeException(lib.bee_get_last_error().intValue());
+
+        return val.getByteArray(0, len[0].intValue());
+    }
+
+    public void setCoefficient(byte[] v) throws BeeException
+    {
+        freeAttr(coefficientAttribute);
+        coefficientAttribute = null;
+        lib.bee_reset_error();
+
+        Pointer val = copyByteArray(v);
+        if (val != null)
+            lib.bee_set_coefficient(t, val, new NativeLong(v.length));
+        Errors.checkError();
+
+        coefficientAttribute = val;
+        coefficientException = null;
+    }
+
+    protected void setCoefficientException(BeeException e) {coefficientException = e;}
 
     private void mergeBoolAttr(Template t, String attr)
     {

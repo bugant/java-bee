@@ -153,6 +153,26 @@ public interface BeeLibrary extends Library
     Pointer bee_get_private_exponent(Pointer t, NativeLong[] len);
     void bee_set_private_exponent(Pointer t, Pointer v, NativeLong len);
 
+    void bee_add_prime_1(Pointer t);
+    Pointer bee_get_prime_1(Pointer t, NativeLong[] len);
+    void bee_set_prime_1(Pointer t, Pointer v, NativeLong len);
+
+    void bee_add_prime_2(Pointer t);
+    Pointer bee_get_prime_2(Pointer t, NativeLong[] len);
+    void bee_set_prime_2(Pointer t, Pointer v, NativeLong len);
+
+    void bee_add_exponent_1(Pointer t);
+    Pointer bee_get_exponent_1(Pointer t, NativeLong[] len);
+    void bee_set_exponent_1(Pointer t, Pointer v, NativeLong len);
+
+    void bee_add_exponent_2(Pointer t);
+    Pointer bee_get_exponent_2(Pointer t, NativeLong[] len);
+    void bee_set_exponent_2(Pointer t, Pointer v, NativeLong len);
+
+    void bee_add_coefficient(Pointer t);
+    Pointer bee_get_coefficient(Pointer t, NativeLong[] len);
+    void bee_set_coefficient(Pointer t, Pointer v, NativeLong len);
+
     Pointer bee_new(String module, String pin);
     Pointer bee_new_and_configure(String module, String pin, NativeLong sym_mech, NativeLong asym_mech,
             Pointer sym_template, Pointer pub_template, Pointer priv_template);

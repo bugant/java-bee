@@ -45,6 +45,8 @@ public class Template implements Cloneable
     private Pointer privateExponentAttribute;
     private Pointer prime1Attribute;
     private Pointer prime2Attribute;
+    private Pointer exponent1Attribute;
+    private Pointer exponent2Attribute;
 
     private BeeException valueException;
     private BeeException modulusException;
@@ -52,6 +54,8 @@ public class Template implements Cloneable
     private BeeException privateExponentException;
     private BeeException prime1Exception;
     private BeeException prime2Exception;
+    private BeeException exponent1Exception;
+    private BeeException exponent2Exception;
 
     public Template() throws BeeException
     {
@@ -1029,6 +1033,86 @@ public class Template implements Cloneable
     }
 
     protected void setPrime2Exception(BeeException e) {prime2Exception = e;}
+
+    public void addExponent1() throws BeeException
+    {
+        lib.bee_reset_error();
+        lib.bee_add_exponent_1(t);
+        Errors.checkError();
+    }
+
+    public byte[] getExponent1() throws BeeException
+    {
+        NativeLong[] len = new NativeLong[1];
+        Pointer val;
+
+        if (exponent1Exception != null)
+            throw exponent1Exception;
+
+        lib.bee_reset_error();
+        val = lib.bee_get_exponent_1(t, len);
+        if (val == null)
+            throw new BeeException(lib.bee_get_last_error().intValue());
+
+        return val.getByteArray(0, len[0].intValue());
+    }
+
+    public void setExponent1(byte[] v) throws BeeException
+    {
+        freeAttr(exponent1Attribute);
+        exponent1Attribute = null;
+        lib.bee_reset_error();
+
+        Pointer val = copyByteArray(v);
+        if (val != null)
+            lib.bee_set_exponent_1(t, val, new NativeLong(v.length));
+        Errors.checkError();
+
+        exponent1Attribute = val;
+        exponent1Exception = null;
+    }
+
+    protected void setExponent1Exception(BeeException e) {exponent1Exception = e;}
+
+    public void addExponent2() throws BeeException
+    {
+        lib.bee_reset_error();
+        lib.bee_add_exponent_2(t);
+        Errors.checkError();
+    }
+
+    public byte[] getExponent2() throws BeeException
+    {
+        NativeLong[] len = new NativeLong[1];
+        Pointer val;
+
+        if (exponent2Exception != null)
+            throw exponent2Exception;
+
+        lib.bee_reset_error();
+        val = lib.bee_get_exponent_2(t, len);
+        if (val == null)
+            throw new BeeException(lib.bee_get_last_error().intValue());
+
+        return val.getByteArray(0, len[0].intValue());
+    }
+
+    public void setExponent2(byte[] v) throws BeeException
+    {
+        freeAttr(exponent2Attribute);
+        exponent2Attribute = null;
+        lib.bee_reset_error();
+
+        Pointer val = copyByteArray(v);
+        if (val != null)
+            lib.bee_set_exponent_2(t, val, new NativeLong(v.length));
+        Errors.checkError();
+
+        exponent2Attribute = val;
+        exponent2Exception = null;
+    }
+
+    protected void setExponent2Exception(BeeException e) {exponent2Exception = e;}
 
     private void mergeBoolAttr(Template t, String attr)
     {
